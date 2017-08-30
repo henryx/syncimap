@@ -13,24 +13,32 @@ import (
 	"net/url"
 )
 
-var (
-	src = kingpin.Arg("source", "Set source URI").Required().String()
-	dst = kingpin.Arg("destination", "Set destination URI").Required().String()
-)
+type Data struct {
+	Source      *string
+	Destination *string
+}
+
+func parse(data *Data) {
+	data.Source = kingpin.Arg("source", "Set source URI").Required().String()
+	data.Destination = kingpin.Arg("destination", "Set destination URI").Required().String()
+}
 
 func main() {
+	var data Data
 	var srcurl, dsturl *url.URL
 	var err error
+
+	parse(&data)
 
 	kingpin.CommandLine.HelpFlag.Short('h')
 	kingpin.Parse()
 
-	srcurl, err = url.Parse(*src)
+	srcurl, err = url.Parse(*data.Source)
 	if err != nil {
 		fmt.Errorf("Source URI is not valid")
 	}
 
-	dsturl, err = url.Parse(*dst)
+	dsturl, err = url.Parse(*data.Destination)
 	if err != nil {
 		fmt.Errorf("Destination URI is not valid")
 	}
