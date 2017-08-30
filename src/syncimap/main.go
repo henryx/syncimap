@@ -8,7 +8,9 @@
 package main
 
 import (
+	"fmt"
 	"gopkg.in/alecthomas/kingpin.v2"
+	"net/url"
 )
 
 var (
@@ -17,6 +19,19 @@ var (
 )
 
 func main() {
+	var srcurl, dsturl *url.URL
+	var err error
+
 	kingpin.CommandLine.HelpFlag.Short('h')
 	kingpin.Parse()
+
+	srcurl, err = url.Parse(*src)
+	if err != nil {
+		fmt.Errorf("Source URI is not valid")
+	}
+
+	dsturl, err = url.Parse(*dst)
+	if err != nil {
+		fmt.Errorf("Destination URI is not valid")
+	}
 }
