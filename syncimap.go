@@ -41,7 +41,7 @@ func parse(data *Data) {
 
 func main() {
 	var data Data
-	var srcconn imap.Connection
+	var srcconn, dstconn imap.Connection
 
 	parse(&data)
 
@@ -50,4 +50,10 @@ func main() {
 	}
 	defer srcconn.Client.Close()
 	defer srcconn.Client.Logout()
+
+	if err := dstconn.Dial(data.Destination); err != nil {
+		log.Fatalf(err.Error())
+	}
+	defer dstconn.Client.Close()
+	defer dstconn.Client.Logout()
 }
