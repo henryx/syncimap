@@ -9,6 +9,7 @@ package main
 
 import (
 	"gopkg.in/alecthomas/kingpin.v2"
+	"imap"
 	"log"
 	"net/url"
 )
@@ -40,6 +41,11 @@ func parse(data *Data) {
 
 func main() {
 	var data Data
+	var srcconn imap.Connection
 
 	parse(&data)
+
+	if err := srcconn.Dial(data.Source); err != nil {
+		log.Fatalf(err.Error())
+	}
 }
