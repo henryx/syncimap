@@ -20,12 +20,18 @@ type Connection struct {
 func (conn *Connection) Dial(uri *url.URL) error {
 	var err error
 
+	port := uri.Port()
 	switch uri.Scheme {
 	case "imap":
-		port := uri.Port()
+		if port == "" {
+			port = "143"
+		}
 		conn.Client, err = client.Dial(uri.Host + ":" + port)
 	case "imaps":
-		conn.Client, err = client.DialTLS(uri.Host+":"+uri.Port(), nil)
+		if port == "" {
+			port = "993"
+		}
+		conn.Client, err = client.DialTLS(uri.Host+":"+port, nil)
 	default:
 		return errors.New("Scheme not supported: " + uri.Scheme)
 	}
