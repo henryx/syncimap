@@ -8,8 +8,8 @@
 package main
 
 import (
-	"fmt"
 	"gopkg.in/alecthomas/kingpin.v2"
+	"log"
 	"net/url"
 )
 
@@ -29,12 +29,12 @@ func parse(data *Data) {
 
 	data.Source, err = url.Parse(*source)
 	if err != nil {
-		fmt.Errorf("Source URI is not valid")
+		log.Fatalf("Source URI is not valid")
 	}
 
 	data.Destination, err = url.Parse(*destination)
 	if err != nil {
-		fmt.Errorf("Destination URI is not valid")
+		log.Fatalf("Destination URI is not valid")
 	}
 }
 
