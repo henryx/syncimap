@@ -14,32 +14,32 @@ import (
 )
 
 type Data struct {
-	Source      *string
-	Destination *string
+	Source      *url.URL
+	Destination *url.URL
 }
 
 func parse(data *Data) {
-	data.Source = kingpin.Arg("source", "Set source URI").Required().String()
-	data.Destination = kingpin.Arg("destination", "Set destination URI").Required().String()
-}
-
-func main() {
-	var data Data
-	var srcurl, dsturl *url.URL
 	var err error
 
-	parse(&data)
+	source := kingpin.Arg("source", "Set source URI").Required().String()
+	destination := kingpin.Arg("destination", "Set destination URI").Required().String()
 
 	kingpin.CommandLine.HelpFlag.Short('h')
 	kingpin.Parse()
 
-	srcurl, err = url.Parse(*data.Source)
+	data.Source, err = url.Parse(*source)
 	if err != nil {
 		fmt.Errorf("Source URI is not valid")
 	}
 
-	dsturl, err = url.Parse(*data.Destination)
+	data.Destination, err = url.Parse(*destination)
 	if err != nil {
 		fmt.Errorf("Destination URI is not valid")
 	}
+}
+
+func main() {
+	var data Data
+
+	parse(&data)
 }
