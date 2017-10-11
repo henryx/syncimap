@@ -48,4 +48,6 @@ func main() {
 	if err := srcconn.Dial(data.Source); err != nil {
 		log.Fatalf(err.Error())
 	}
+	defer srcconn.Client.Close()
+	defer srcconn.Client.Logout()
 }
