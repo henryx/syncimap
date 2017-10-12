@@ -9,7 +9,7 @@ package main
 
 import (
 	"gopkg.in/alecthomas/kingpin.v2"
-	"imap"
+	"syncimap/imap"
 	"log"
 	"net/url"
 )
