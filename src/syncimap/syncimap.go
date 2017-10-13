@@ -42,16 +42,19 @@ func parse(data *Data) {
 func main() {
 	var data Data
 	var srcconn, dstconn imap.Connection
+	var err error
 
 	parse(&data)
 
-	if err := srcconn.Dial(data.Source); err != nil {
+	err = srcconn.Dial(data.Source)
+	if  err != nil {
 		log.Fatalf(err.Error())
 	}
 	defer srcconn.Client.Close()
 	defer srcconn.Client.Logout()
 
-	if err := dstconn.Dial(data.Destination); err != nil {
+	err = dstconn.Dial(data.Destination)
+	if err != nil {
 		log.Fatalf(err.Error())
 	}
 	defer dstconn.Client.Close()
