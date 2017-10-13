@@ -9,6 +9,7 @@ package imap
 
 import (
 	"errors"
+	"github.com/emersion/go-imap"
 	"github.com/emersion/go-imap/client"
 	"net/url"
 )
@@ -54,4 +55,20 @@ func (conn *Connection) Dial(uri *url.URL) error {
 	}
 
 	return err
+}
+
+func (conn *Connection) Folders(folder string) []string {
+	var folders []string
+	mailboxes := make(chan *imap.MailboxInfo)
+
+	done := make(chan error, 1)
+	go func() {
+		done <- conn.Client.List("", folder, mailboxes)
+	}()
+
+	for mailbox := range mailboxes {
+		folders = append(folders, mailbox.Name)
+	}
+
+	return folders
 }
