@@ -36,5 +36,22 @@ func (conn *Connection) Dial(uri *url.URL) error {
 		return errors.New("Scheme not supported: " + uri.Scheme)
 	}
 
+	caps, err := conn.Client.Capability()
+	if err != nil {
+		return err
+	}
+
+	if caps["STARTTLS"] {
+		conn.Client.StartTLS(nil)
+	}
+
+	user := uri.User.Username()
+	password, _ := uri.User.Password()
+
+	err = conn.Client.Login(user, password)
+	if err != nil {
+		return err
+	}
+
 	return err
 }
