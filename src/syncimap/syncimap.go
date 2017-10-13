@@ -48,14 +48,14 @@ func main() {
 
 	err = srcconn.Dial(data.Source)
 	if err != nil {
-		log.Fatalf("Failed to open connection for ", data.Source.Hostname(), ": ", err.Error())
+		log.Fatalf("Failed to open connection for %s: %s", data.Source.Hostname(), err.Error())
 	}
 	defer srcconn.Client.Close()
 	defer srcconn.Client.Logout()
 
 	err = dstconn.Dial(data.Destination)
 	if err != nil {
-		log.Fatalf("Failed to open connection for ", data.Source.Hostname(), ": ", err.Error())
+		log.Fatalf("Failed to open connection for %s: %s", data.Destination.Hostname(), err.Error())
 	}
 	defer dstconn.Client.Close()
 	defer dstconn.Client.Logout()
