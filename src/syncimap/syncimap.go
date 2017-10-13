@@ -59,4 +59,7 @@ func main() {
 	}
 	defer dstconn.Client.Close()
 	defer dstconn.Client.Logout()
+
+	folders := srcconn.Folders("*")
+	log.Println(folders)
 }
