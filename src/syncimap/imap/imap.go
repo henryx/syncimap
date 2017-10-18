@@ -72,3 +72,9 @@ func (conn *Connection) Folders(folder string) []string {
 
 	return folders
 }
+
+func (conn *Connection) CreateFolder(folder string) error {
+	err := conn.Client.Create(folder)
+
+	return err
+}
