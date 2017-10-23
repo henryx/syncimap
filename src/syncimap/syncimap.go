@@ -63,8 +63,10 @@ func main() {
 	folders := srcconn.Folders("*")
 
 	for _, folder := range folders {
-		if err := dstconn.CreateFolder(folder); err != nil {
-			log.Println("Cannot create folder", folder, ": ", err.Error())
+		if !dstconn.FolderExist(folder) {
+			if err := dstconn.CreateFolder(folder); err != nil {
+				log.Println("Cannot create folder", folder, ": ", err.Error())
+			}
 		}
 	}
 }
