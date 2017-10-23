@@ -73,6 +73,17 @@ func (conn *Connection) Folders(folder string) []string {
 	return folders
 }
 
+func (conn *Connection) FolderExist(folder string) bool {
+	conn.Client.Close()
+
+	_, err := conn.Client.Select(folder, false)
+	if err != nil {
+		return false
+	}
+
+	return true
+}
+
 func (conn *Connection) CreateFolder(folder string) error {
 	err := conn.Client.Create(folder)
 
