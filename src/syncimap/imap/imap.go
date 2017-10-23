@@ -84,7 +84,7 @@ func (conn *Connection) FolderExist(folder string) bool {
 	return true
 }
 
-func (conn *Connection) CreateFolder(folder string) error {
+func (conn *Connection) FolderCreate(folder string) error {
 	err := conn.Client.Create(folder)
 
 	return err

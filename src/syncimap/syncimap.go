@@ -64,7 +64,7 @@ func main() {
 
 	for _, folder := range folders {
 		if !dstconn.FolderExist(folder) {
-			if err := dstconn.CreateFolder(folder); err != nil {
+			if err := dstconn.FolderCreate(folder); err != nil {
 				log.Println("Cannot create folder", folder, ": ", err.Error())
 			}
 		}
