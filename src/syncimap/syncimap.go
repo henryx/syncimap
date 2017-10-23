@@ -61,5 +61,10 @@ func main() {
 	defer dstconn.Client.Logout()
 
 	folders := srcconn.Folders("*")
-	log.Println(folders)
+
+	for _, folder := range folders {
+		if err := dstconn.CreateFolder(folder); err != nil {
+			log.Println("Cannot create folder", folder, ": ", err.Error())
+		}
+	}
 }
