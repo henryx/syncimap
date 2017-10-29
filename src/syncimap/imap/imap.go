@@ -57,8 +57,8 @@ func (conn *Connection) Dial(uri *url.URL) error {
 	return err
 }
 
-func (conn *Connection) Folders(folder string) []string {
-	var folders []string
+func (conn *Connection) Folders(folder string) []*imap.MailboxInfo {
+	var folders []*imap.MailboxInfo
 	mailboxes := make(chan *imap.MailboxInfo)
 
 	done := make(chan error, 1)
@@ -67,7 +67,7 @@ func (conn *Connection) Folders(folder string) []string {
 	}()
 
 	for mailbox := range mailboxes {
-		folders = append(folders, mailbox.Name)
+		folders = append(folders, mailbox)
 	}
 
 	return folders
@@ -84,8 +84,8 @@ func (conn *Connection) FolderExist(folder string) bool {
 	return true
 }
 
-func (conn *Connection) FolderCreate(folder string) error {
-	err := conn.Client.Create(folder)
+func (conn *Connection) FolderCreate(folder *imap.MailboxInfo) error {
+	err := conn.Client.Create(folder.Name)
 
 	return err
 }
