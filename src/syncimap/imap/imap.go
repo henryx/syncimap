@@ -12,6 +12,7 @@ import (
 	"github.com/emersion/go-imap"
 	"github.com/emersion/go-imap/client"
 	"net/url"
+	"strings"
 )
 
 type Connection struct {
@@ -85,6 +86,16 @@ func (conn *Connection) FolderExist(folder string) bool {
 }
 
 func (conn *Connection) FolderCreate(folder *imap.MailboxInfo) error {
+
+	parent := "INBOX"
+	name := folder.Name
+	if strings.Contains(name, folder.Delimiter) {
+		elements := strings.Split(folder.Name, folder.Delimiter)
+		parent = parent + folder.Delimiter + strings.Join(elements[:len(elements)-1], folder.Delimiter)
+		name = elements[len(elements)-1]
+	}
+
+	conn.Client.Select(parent, false)
 	err := conn.Client.Create(folder.Name)
 
 	return err
