@@ -23,6 +23,11 @@ type Connection struct {
 func (conn *Connection) Dial(uri *url.URL) error {
 	var err error
 
+	tlscfg := &tls.Config{
+		InsecureSkipVerify: true,
+		ServerName:         uri.Host,
+	}
+
 	port := uri.Port()
 	switch uri.Scheme {
 	case "imap":
@@ -33,11 +38,6 @@ func (conn *Connection) Dial(uri *url.URL) error {
 	case "imaps":
 		if port == "" {
 			port = "993"
-		}
-
-		tlscfg := &tls.Config{
-			InsecureSkipVerify: true,
-			ServerName:         uri.Host,
 		}
 
 		conn.Client, err = client.DialTLS(uri.Host+":"+port, tlscfg)
@@ -55,7 +55,7 @@ func (conn *Connection) Dial(uri *url.URL) error {
 	}
 
 	if caps["STARTTLS"] {
-		conn.Client.StartTLS(nil)
+		conn.Client.StartTLS(tlscfg)
 	}
 
 	user := uri.User.Username()
