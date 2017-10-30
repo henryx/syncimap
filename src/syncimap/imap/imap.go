@@ -8,6 +8,7 @@
 package imap
 
 import (
+	"crypto/tls"
 	"errors"
 	"github.com/emersion/go-imap"
 	"github.com/emersion/go-imap/client"
@@ -33,7 +34,13 @@ func (conn *Connection) Dial(uri *url.URL) error {
 		if port == "" {
 			port = "993"
 		}
-		conn.Client, err = client.DialTLS(uri.Host+":"+port, nil)
+
+		tlscfg := &tls.Config{
+			InsecureSkipVerify: true,
+			ServerName:         uri.Host,
+		}
+
+		conn.Client, err = client.DialTLS(uri.Host+":"+port, tlscfg)
 	default:
 		return errors.New("Scheme not supported: " + uri.Scheme)
 	}
