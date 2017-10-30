@@ -38,6 +38,10 @@ func (conn *Connection) Dial(uri *url.URL) error {
 		return errors.New("Scheme not supported: " + uri.Scheme)
 	}
 
+	if err != nil {
+		return err
+	}
+
 	caps, err := conn.Client.Capability()
 	if err != nil {
 		return err
